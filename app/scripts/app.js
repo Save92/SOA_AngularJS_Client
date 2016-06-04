@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'angularSoap'
+    'angularSoap',
+    'ngToast'
   ])
   .config(function ($routeProvider) {
     $routeProvider

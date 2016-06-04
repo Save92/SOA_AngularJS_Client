@@ -17,7 +17,7 @@ angular.module('angularClientApp')
 //       }
 //   };
 // }])
-.controller('MainCtrl', function ($scope) {
+.controller('MainCtrl', function ($scope, ngToast) {
     // CallSoapService.soap_weather('http://127.0.0.1:8080/soap_weather/wsdl', "test", "1234", "localhost", 'localhost').then(function(response){
     //   $scope.response = response;
     // });
@@ -110,7 +110,12 @@ angular.module('angularClientApp')
   				// Now,you can process the returnValue in function by_lat_lon_handler
   				by_lat_lon_handler(resultValue);
   			}else{
-  				alert("web service response error:" + xmlHttpRequest.status + "," + xmlHttpRequest.statusText);
+  				//alert("web service response error:" + xmlHttpRequest.status + "," + xmlHttpRequest.statusText);
+          ngToast.create({
+            className: 'danger',
+            content: "wWb service response error:" + xmlHttpRequest.status + "," + xmlHttpRequest.statusText,
+            timeout:4000
+          });
   			}
   		}
   	}
@@ -119,8 +124,12 @@ angular.module('angularClientApp')
   	function by_lat_lon_handler(/*string*/ resultValue) {
       console.log("resultValue", resultValue);
       $scope.responseValue = resultValue;
+      ngToast.create({
+        className: 'success',
+        content: 'Retour du server SOAP valide',
+        timeout: 	4000
+      });
       console.log("$scope.responseValue", $scope.responseValue);
       $scope.$apply();
   	}
-    console.log("test");
   });
