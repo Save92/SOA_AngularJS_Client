@@ -1,4 +1,64 @@
 <div class="jumbotron">
   <h1>Welcome to our SOA project</h1>
+</div>
+<form ng-submit="callSoap()">
+  <div class=row>
+    <div class="form-group col-lg-2">
+      <label for="login">Login :</label>
+      <input type="text" class="form-control" id="login" ng-model="params.login">
+    </div>
+    <div class="form-group col-lg-2">
+      <label for="password">Password :</label>
+      <input type="text" class="form-control" id="password" ng-model="params.password">
+    </div>
+    <div class="form-group col-lg-4">
+      <label for="lat">Lattitude :</label>
+      <input type="text" class="form-control" id="lat" ng-model="params.lat">
+    </div>
+    <div class="form-group col-lg-4">
+      <label for="long">Longitude :</label>
+      <input type="text" class="form-control" id="long" ng-model="params.long">
+    </div>
+  </div>
+  <div class=row>
+    <div class="form-group col-lg-4">
+      <label for="ipRest">Authentication server ip :</label>
+      <input type="text" class="form-control" id="ipRest" placeholder="127.0.0.1:3000" ng-model="params.ipRest">
+    </div>
+    <div class="form-group col-lg-4">
+      <label for="authMethod">Authentication method :</label>
+      <input type="text" class="form-control" id="authMethod" placeholder="authent" ng-model="params.authMethod">
+    </div>
+    <div class="form-group col-lg-4">
+      <label for="ipSoap">SOAP server ip:</label>
+      <input type="text" class="form-control" id="ipSoap" placeholder="127.0.0.1:8080" ng-model="params.ipSoap">
+    </div>
+</div>
+<div class="row">
+  <div class="form-group col-lg-6">
+    <label for="action">SOAP method name :</label>
+    <input type="text" class="form-control" id="action" placeholder="soap_call" ng-model="params.actionName">
+  </div>
+  <div class="form-group col-lg-6">
+    <label for="endpoint">SOAP endpoint name :</label>
+    <input type="text" class="form-control" id="endpoint" placeholder="soap_weather" ng-model="params.endpoint">
+  </div>
+</div>
+  <div class="form-group">
 
+    <button type="button" ng-click="reset()" class="btn btn-warning">Reset</button>
+    <button type="submit" class="btn btn-default">Get weather</button>
+  </div>
+</form>
+<div ng-if="messageSOAP"  id="xmlMessage">
+  <h2>SOAP Call :</h2>
+  <div class="xmlMessage">
+      <pre class="prettyprint lang-xml">{{messageSOAP}}</pre>
+  </div>
+</div>
+<div ng-if="responseValue" id="response">
+  <h2>Server Response :<h2>
+    <div class="xmlMessage">
+      <pre class="prettyprint lang-xml">{{responseValue}}</pre>
+  </div>
 </div>

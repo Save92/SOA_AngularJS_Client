@@ -120,18 +120,23 @@ SOAPClient._cacheWsdl = [];
 SOAPClient._loadWsdl = function(url, method, parameters, async, callback)
 {
 	// load from cache?
-	var wsdl = SOAPClient_cacheWsdl[url];
+	var wsdl = SOAPClient._cacheWsdl[url];
 	if(wsdl + "" != "" && wsdl + "" != "undefined")
 		return SOAPClient._sendSoapRequest(url, method, parameters, async, callback, wsdl);
 	// get wsdl
 	var xmlHttp = SOAPClient._getXmlHttp();
 	if (SOAPClient.username && SOAPClient.password){
 		xmlHttp.open("GET", url + "?wsdl", async, SOAPClient.username, SOAPClient.password);
+
+    xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
 		// Some WS implementations (i.e. BEA WebLogic Server 10.0 JAX-WS) don't support Challenge/Response HTTP BASIC, so we send authorization headers in the first request
 		xmlHttp.setRequestHeader("Authorization", "Basic " + SOAPClient._toBase64(SOAPClient.username + ":" + SOAPClient.password));
 	}
 	else
-		xmlHttp.open("GET", url + "?wsdl", async);
+
+	 	xmlHttp.open("GET", url, async);
+    xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+
 	if(async)
 	{
 		xmlHttp.onreadystatechange = function()
@@ -141,19 +146,22 @@ SOAPClient._loadWsdl = function(url, method, parameters, async, callback)
 		}
 	}
 	xmlHttp.send(null);
-	if (!async)
+	//if (!async)
 		return SOAPClient._onLoadWsdl(url, method, parameters, async, callback, xmlHttp);
 }
 SOAPClient._onLoadWsdl = function(url, method, parameters, async, callback, req)
 {
 	var wsdl = req.responseXML;
-	SOAPClient_cacheWsdl[url] = wsdl;	// save a copy in cache
+	SOAPClient._cacheWsdl[url] = wsdl;	// save a copy in cache
 	return SOAPClient._sendSoapRequest(url, method, parameters, async, callback, wsdl);
 }
 SOAPClient._sendSoapRequest = function(url, method, parameters, async, callback, wsdl)
 {
 	// get namespace
-	var ns = (wsdl.documentElement.attributes["targetNamespace"] + "" === "undefined") ? wsdl.documentElement.attributes.getNamedItem("targetNamespace").nodeValue : wsdl.documentElement.attributes["targetNamespace"].value;
+  var ns = "";
+  if(wsdl != null && wsdl.documentElement != null) {
+    ns = (wsdl.documentElement.attributes["targetNamespace"] + "" === "undefined") ? wsdl.documentElement.attributes.getNamedItem("targetNamespace").nodeValue : wsdl.documentElement.attributes["targetNamespace"].value;
+  }
 	// build SOAP request
 	var sr =
 				"<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
@@ -167,16 +175,17 @@ SOAPClient._sendSoapRequest = function(url, method, parameters, async, callback,
 				"</" + method + "></soap:Body></soap:Envelope>";
 	// send request
 	var xmlHttp = SOAPClient._getXmlHttp();
-	if (SOAPClient.username && SOAPClient.password){
+	/*if (SOAPClient.username && SOAPClient.password){
 		xmlHttp.open("POST", url, async, SOAPClient.username, SOAPClient.password);
 		// Some WS implementations (i.e. BEA WebLogic Server 10.0 JAX-WS) don't support Challenge/Response HTTP BASIC, so we send authorization headers in the first request
 		xmlHttp.setRequestHeader("Authorization", "Basic " + SOAPClient._toBase64(SOAPClient.username + ":" + SOAPClient.password));
 	}
-	else
+	else*/
 		xmlHttp.open("POST", url, async);
 	var soapaction = ((ns.lastIndexOf("/") != ns.length - 1) ? ns + "/" : ns) + encodeURIComponent(method);
 	xmlHttp.setRequestHeader("SOAPAction", soapaction);
 	xmlHttp.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
+	xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
 	if(async)
 	{
 		xmlHttp.onreadystatechange = function()

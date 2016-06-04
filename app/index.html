@@ -12,6 +12,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="bower_components/angularic-ionicon/angularic-ionicon.css"/>
     <!-- endbuild -->
   </head>
   <body ng-app="angularClientApp">
@@ -32,14 +33,14 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">angularClient</a>
+            <a class="navbar-brand" href="#/">angularSOAPClient</a>
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+          <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="HeaderController">
 
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
+              <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
+              <li ng-class="{ active: isActive('/about')}"><a ng-href="#/about">About</a></li>
             </ul>
           </div>
         </div>
@@ -52,7 +53,7 @@
 
     <div class="footer">
       <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> Flauder Pierre & Journaud Nicolas</p>
+        <p><span class="glyphicon glyphicon-sunglasses"></span><span ><img src="./images/png/512/beer.png" height="18" width="18"/></span><span ><img src="./images/png/512/social-tux.png" height="18" width="18"/></span>Flauder Pierre & Journaud Nicolas<span ><img src="./images/png/512/social-apple-outline.png" height="18" width="18"/><img src="./images/png/512/beer.png" height="18" width="18"/></span><span class="glyphicon glyphicon-sunglasses"></p>
       </div>
     </div>
 
@@ -86,10 +87,17 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
 
         <script src="scripts/app.js"></script>
+        <script src="scripts/prettify/run_prettify.js"></script>
+        <script src="scripts/prettify/prettify.js"></script>
+        <script src="scripts/prettify/vkbeautify.js"></script>
         <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/directives/xmlBeautify.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/HeaderController.js"></script>
         <script src="scripts/modules/soapclient.js"></script>
+        <script src="scripts/modules/callSoapModule.js"></script>
         <script src="scripts/modules/angular.soap.js"></script>
         <!-- endbuild -->
+
 </body>
 </html>
